@@ -66,7 +66,7 @@ class Lienzo(activity: MainActivity): View(activity),SensorEventListener {
             luna.y += event.values[1]/10
         }
         if(event.sensor.type==Sensor.TYPE_PROXIMITY){
-            if (event.values[0]>=1f){
+            if (event.values[0]<1f){
                 //Hacemos de dia, sale el sol y se esconde la luna
                 fondo.colorF=dia
                 luna.p.alpha=0
