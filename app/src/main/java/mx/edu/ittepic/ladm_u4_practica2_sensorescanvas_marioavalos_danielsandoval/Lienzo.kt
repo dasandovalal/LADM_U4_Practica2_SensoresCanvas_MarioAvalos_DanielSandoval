@@ -18,15 +18,16 @@ class Lienzo(activity: MainActivity): View(activity),SensorEventListener {
     lateinit var sensorManager:SensorManager
 
     val noche = Color.rgb(18,47,80)
-    val dia = Color.rgb(241,212,52)
+    val dia = Color.rgb(0,170,228)
 
     var fondo = Fondo(this,dia)
     var bruja = Figura(this,300f,700f,R.drawable.bruja180)
-    var luna = Figura(this,450f,200f,R.drawable.iconfinder_04_moon_sleepy_night_emoticon_weather_smiley_3375696)
-    var nubeFeliz = Figura(this,100f,100f,R.drawable.iconfinder_05_cloud_smile_cloudy_emoticon_weather_smiley_3375695)
-    var nubeTriste = Figura(this,800f,100f,R.drawable.iconfinder_06_rain_cloud_cry_emoticon_weather_smiley_3375694)
-    var nubeEnojada = Figura(this,100f,400f,R.drawable.iconfinder_08_thunder_cloud_angry_emoticon_weather_smiley_3375692)
-    var nubeNieve = Figura(this,800f,400f,R.drawable.iconfinder_10_snow_coud_emoticon_weather_smiley_3375690)
+    var luna = Figura(this,800f,100f,R.drawable.iconfinder_04_moon_sleepy_night_emoticon_weather_smiley_3375696)
+    var sol = Figura(this,800f,100f,R.drawable.iconfinder_07_sun_smile_happy_emoticon_weather_smiley_3375693)
+    var nubeFeliz = Figura(this,100f,200f,R.drawable.iconfinder_05_cloud_smile_cloudy_emoticon_weather_smiley_3375695)
+    var nubeTriste = Figura(this,580f,400f,R.drawable.iconfinder_06_rain_cloud_cry_emoticon_weather_smiley_3375694)
+    var nubeEnojada = Figura(this,50f,600f,R.drawable.iconfinder_08_thunder_cloud_angry_emoticon_weather_smiley_3375692)
+    var nubeNieve = Figura(this,850f,300f,R.drawable.iconfinder_10_snow_coud_emoticon_weather_smiley_3375690)
 
     val p = Paint()
 
@@ -41,6 +42,7 @@ class Lienzo(activity: MainActivity): View(activity),SensorEventListener {
         fondo.dibujarFondo(c)
         bruja.dibujar(c)
         luna.dibujar(c)
+        sol.dibujar(c)
         nubeFeliz.dibujar(c)
         nubeTriste.dibujar(c)
         nubeEnojada.dibujar(c)
@@ -52,8 +54,12 @@ class Lienzo(activity: MainActivity): View(activity),SensorEventListener {
         if(event.sensor.type==Sensor.TYPE_PROXIMITY){
             if (event.values[0]>=1f){
                 fondo.colorF=dia
+                luna.p.alpha=0
+                sol.p.alpha=255
             }else{
                 fondo.colorF=noche
+                sol.p.alpha=0
+                luna.p.alpha=255
             }
         }
         invalidate()
