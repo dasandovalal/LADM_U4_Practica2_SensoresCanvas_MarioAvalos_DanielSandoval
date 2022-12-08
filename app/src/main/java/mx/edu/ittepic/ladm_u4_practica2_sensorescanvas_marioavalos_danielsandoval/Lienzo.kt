@@ -1,11 +1,21 @@
 package mx.edu.ittepic.ladm_u4_practica2_sensorescanvas_marioavalos_danielsandoval
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.view.View
+import kotlinx.coroutines.delay
 
-class Lienzo(activity: MainActivity): View(activity) {
+class Lienzo(activity: MainActivity): View(activity),SensorEventListener {
+
+    var m = activity
+
+    lateinit var sensorManager:SensorManager
 
     val noche = Color.rgb(18,47,80)
     val dia = Color.rgb(241,212,52)
@@ -20,6 +30,11 @@ class Lienzo(activity: MainActivity): View(activity) {
 
     val p = Paint()
 
+    init {
+        settearSensores()
+    }
+
+
     override fun onDraw(c: Canvas) {
         super.onDraw(c)
 
@@ -30,5 +45,35 @@ class Lienzo(activity: MainActivity): View(activity) {
         nubeTriste.dibujar(c)
         nubeEnojada.dibujar(c)
         nubeNieve.dibujar(c)
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        //if(event.sensor.type==Sensor.TYPE_ACCELEROMETER){ }
+        if(event.sensor.type==Sensor.TYPE_PROXIMITY){
+            if (event.values[0]>=1f){
+                fondo.colorF=dia
+            }else{
+                fondo.colorF=noche
+            }
+        }
+        invalidate()
+
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+    }
+
+    fun settearSensores(){
+        sensorManager = m.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager.registerListener(this,
+        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        SensorManager.SENSOR_DELAY_NORMAL)
+
+        sensorManager = m.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager.registerListener(this,
+        sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY),
+        SensorManager.SENSOR_DELAY_NORMAL)
+
     }
 }
